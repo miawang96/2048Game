@@ -1,0 +1,35 @@
+html, body {
+    width: 100%;
+}
+
+.container {
+    width: 40%;
+    margin: 0 auto;
+}
+
+.header {
+    margin: 30px 0;
+    text-align: center;
+}
+
+.game-box {
+    height: 600px;
+    width: 600px;
+    border: 1px solid #bbada0;
+    border-radius: 13px;
+    background-color: #bbada0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: space-between;
+    padding: 18px 18px 0 18px;
+}
+
+
+.gird_cell {
+    border: 1px solid #ccc0b3;
+    border-radius: 13px;
+    background-color: #ccc0b3;
+    width: 130px;
+    height: 130px;
+}
