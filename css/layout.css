@@ -27,9 +27,13 @@ html, body {
 
 
 .gird_cell {
-    border: 1px solid #ccc0b3;
+    border: 1px solid #cdc1b4;
     border-radius: 13px;
-    background-color: #ccc0b3;
+    background-color: #cdc1b4;
     width: 130px;
     height: 130px;
+    text-align: center;
+    line-height: 130px;
+    font-size: 60px;
+    font-weight: 500;
 }
