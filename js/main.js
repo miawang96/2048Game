@@ -28,7 +28,7 @@ $(document).on('keydown', function(event) {
     const keyNum = event.keyCode;
     switch(keyNum) {
         case KEY_LEFT:
-            console.log(numberGrid[2].color)
+            moveLeft();
             break;
         case KEY_UP:
             console.log('up')
@@ -70,9 +70,51 @@ function generateGameCode() {
 
     // 将随机生成的数字填充到空格子中
     board[randomX][randomY] = randomNum;
-
-    console.log(board[randomX][randomY]);
-
-    // 单元格渲染
     renderGrid(randomX, randomY, randomNum);
+
+    for(let i=0; i<4; i++) {
+        console.log(board[i][0]+'*'+board[i][1]+'*'+board[i][2]+'*'+board[i][3]+'*');
+        console.log('\n');
+    }
+}
+
+/**
+ * 上移
+ */
+function moveUp() {
+
+}
+
+ /**
+ * 下移
+ */
+function moveDown() {
+
+}
+
+ /**
+ * 左移
+ */
+function moveLeft() {
+    for(i=0; i<4; i++) {
+        for(j=1; j<4; j++) {
+            if(board[i][j] !== 0) {
+                for(k=0; k<j; k++) {
+                    if(board[i][k] === 0) {
+
+                    } else if(board[i][k] !== 0) {
+                        
+                    }
+                }
+            }
+        }
+    }
+    generateGameCode();
+}
+
+ /**
+ * 右移
+ */
+function moveRight() {
+
 }

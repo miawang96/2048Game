@@ -4,6 +4,10 @@ const KEY_LEFT = 37;
 const KEY_RIGHT = 39;
 
 const numberGrid = {
+    0: {
+        bgColor: '#cdc1b4',
+        fontColor: '#cdc1b4',
+    },
     2: {
         bgColor: '#eee4ad',
         fontColor: '#776e65',

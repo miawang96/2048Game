@@ -4,3 +4,7 @@ function renderGrid(randomX, randomY, randomNum) {
     $('#grid_'+randomX+'_'+randomY).css('color',numberGrid[randomNum].fontColor);
     $('#grid_'+randomX+'_'+randomY).text(randomNum);
 }
+
+function renderSlideAnimation(fromX, fromY, toX, toY) {
+
+}
