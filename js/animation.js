@@ -6,5 +6,6 @@ function renderGrid(randomX, randomY, randomNum) {
 }
 
 function renderSlideAnimation(fromX, fromY, toX, toY) {
+    $targetGrid = $('#grid_'+fromX+'_'+fromY);
 
 }

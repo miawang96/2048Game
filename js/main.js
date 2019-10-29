@@ -31,13 +31,13 @@ $(document).on('keydown', function(event) {
             moveLeft();
             break;
         case KEY_UP:
-            console.log('up')
+            moveUp();
             break;
         case KEY_RIGHT:
-            console.log('right')
+            moveRight();
             break;
-        case KEY_RIGHT:
-            console.log('down')
+        case KEY_DOWN:
+            moveDown();
             break;
         default:
             break;
@@ -82,14 +82,52 @@ function generateGameCode() {
  * 上移
  */
 function moveUp() {
-
+    for(i=0; i<4; i++) {
+        for(j=1; j<4; j++) {
+            if(board[j][i] !== 0) {
+                for(k=0; k<j; k++) {
+                    if(board[k][i] === 0 && noVerticalBlocks(k,j,i,board)) {
+                        board[k][i] = board[j][i];
+                        board[j][i] = 0;
+                        // 面板上移动方块
+                        // renderSlideAnimation();
+                    } else if(board[k][i] !== 0 && board[k][i] === board[j][i] && noVerticalBlocks(k,j,i,board)) {
+                        board[k][i] += board[j][i];
+                        board[j][i] = 0;
+                        // 面板上移动方块
+                        // renderSlideAnimation();
+                    }
+                }
+            }
+        }
+    }
+    generateGameCode();
 }
 
  /**
  * 下移
  */
 function moveDown() {
-
+    for(i=0; i<4; i++) {
+        for(j=2; j>=0; j--) {
+            if(board[j][i] !== 0) {
+                for(k=3; k>j; k--) {
+                    if(board[k][i] === 0 && noVerticalBlocks(j,k,i,board)) {
+                        board[k][i] = board[j][i];
+                        board[j][i] = 0;
+                        // 面板上移动方块
+                        // renderSlideAnimation();
+                    } else if(board[k][i] !== 0 && board[k][i] === board[j][i] && noVerticalBlocks(j,k,i,board)) {
+                        board[k][i] += board[j][i];
+                        board[j][i] = 0;
+                        // 面板上移动方块
+                        // renderSlideAnimation();
+                    }
+                }
+            }
+        }
+    }
+    generateGameCode();
 }
 
  /**
@@ -100,10 +138,16 @@ function moveLeft() {
         for(j=1; j<4; j++) {
             if(board[i][j] !== 0) {
                 for(k=0; k<j; k++) {
-                    if(board[i][k] === 0) {
-
-                    } else if(board[i][k] !== 0) {
-                        
+                    if(board[i][k] === 0 && noHorizontalBlocks(k,j,i,board)) {
+                        board[i][k] = board[i][j];
+                        board[i][j] = 0;
+                        // 面板上移动方块
+                        // renderSlideAnimation();
+                    } else if(board[i][k] !== 0 && board[i][k] === board[i][j] && noHorizontalBlocks(k,j,i,board)) {
+                        board[i][k] += board[i][j];
+                        board[i][j] = 0;
+                        // 面板上移动方块
+                        // renderSlideAnimation();
                     }
                 }
             }
@@ -116,5 +160,24 @@ function moveLeft() {
  * 右移
  */
 function moveRight() {
-
+    for(i=0; i<4; i++) {
+        for(j=2; j>=0; j--) {
+            if(board[i][j] !== 0) {
+                for(k=3; k>j; k--) {
+                    if(board[i][k] === 0 && noHorizontalBlocks(j,k,i,board)) {
+                        board[i][k] = board[i][j];
+                        board[i][j] = 0;
+                        // 面板上移动方块
+                        // renderSlideAnimation();
+                    } else if(board[i][k] !== 0 && board[i][k] === board[i][j] && noHorizontalBlocks(j,k,i,board)) {
+                        board[i][k] += board[i][j];
+                        board[i][j] = 0;
+                        // 面板上移动方块
+                        // renderSlideAnimation();
+                    }
+                }
+            }
+        }
+    }
+    generateGameCode();
 }
