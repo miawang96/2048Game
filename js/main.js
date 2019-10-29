@@ -1,24 +1,47 @@
 /********全局变量配置********/
-let board = []; 
+let panel = []; 
 
 
 
 $(document).ready(function() {
     init();
-    generateGameCode();
-    generateGameCode();
+    
 });  
 
 function init() {
     // 面板数组值初始化
     for(let i=0; i<4; i++) {
-        board[i] = new Array();
+        panel[i] = new Array();
         for(let j=0; j<4; j++) {
-            board[i][j] = 0;
+            panel[i][j] = 0;
         }
     }
+
+    generateGameCode();
+    generateGameCode();
+
+    updatePanelView();
 };
 
+
+function updatePanelView() {
+    // 生成覆盖在面板上的数字格子
+    // 获取每个格子的绝对定位
+    // 更新每个数字格子的数值
+    for(let i=0; i<4; i++) {
+        for(let j=0; j<4; j++) {
+            $('.game-box').append('<div class="number_cell" id=number_'+i+'_'+j+'></div>');
+                $('#number_'+i+'_'+j).css({
+                    'left': getLeftPosition(i) + 'px',
+                    'top': getTopPosition(j) + 'px',
+                    'backgroundColor': numberGrid[panel[i][j]].bgColor,
+                    'color': numberGrid[panel[i][j]].fontColor,
+                    'border': '1px solid ' + numberGrid[panel[i][j]].bgColor,
+                })
+            $('#number_'+i+'_'+j).text(panel[i][j]);
+        }
+    }
+}
 
 /**
  * 监听键盘方向键按下的事件
@@ -53,7 +76,7 @@ function generateGameCode() {
     let availableGrids = [];
     for(let i=0; i<4; i++) {
         for(let j=0; j<4; j++) {
-            if(board[i][j] === 0) {
+            if(panel[i][j] === 0) {
                 const coordinate = [i, j];
                 availableGrids.push(coordinate);
             }
@@ -69,11 +92,11 @@ function generateGameCode() {
     randomY = randomGrid[1];
 
     // 将随机生成的数字填充到空格子中
-    board[randomX][randomY] = randomNum;
+    panel[randomX][randomY] = randomNum;
     renderGrid(randomX, randomY, randomNum);
 
     for(let i=0; i<4; i++) {
-        console.log(board[i][0]+'*'+board[i][1]+'*'+board[i][2]+'*'+board[i][3]+'*');
+        console.log(panel[i][0]+'*'+panel[i][1]+'*'+panel[i][2]+'*'+panel[i][3]+'*');
         console.log('\n');
     }
 }
@@ -84,16 +107,16 @@ function generateGameCode() {
 function moveUp() {
     for(i=0; i<4; i++) {
         for(j=1; j<4; j++) {
-            if(board[j][i] !== 0) {
+            if(panel[j][i] !== 0) {
                 for(k=0; k<j; k++) {
-                    if(board[k][i] === 0 && noVerticalBlocks(k,j,i,board)) {
-                        board[k][i] = board[j][i];
-                        board[j][i] = 0;
+                    if(panel[k][i] === 0 && noVerticalBlocks(k,j,i,panel)) {
+                        panel[k][i] = panel[j][i];
+                        panel[j][i] = 0;
                         // 面板上移动方块
-                        // renderSlideAnimation();
-                    } else if(board[k][i] !== 0 && board[k][i] === board[j][i] && noVerticalBlocks(k,j,i,board)) {
-                        board[k][i] += board[j][i];
-                        board[j][i] = 0;
+                        renderSlideAnimation(i,j,i,k);
+                    } else if(panel[k][i] !== 0 && panel[k][i] === panel[j][i] && noVerticalBlocks(k,j,i,panel)) {
+                        panel[k][i] += panel[j][i];
+                        panel[j][i] = 0;
                         // 面板上移动方块
                         // renderSlideAnimation();
                     }
@@ -110,18 +133,18 @@ function moveUp() {
 function moveDown() {
     for(i=0; i<4; i++) {
         for(j=2; j>=0; j--) {
-            if(board[j][i] !== 0) {
+            if(panel[j][i] !== 0) {
                 for(k=3; k>j; k--) {
-                    if(board[k][i] === 0 && noVerticalBlocks(j,k,i,board)) {
-                        board[k][i] = board[j][i];
-                        board[j][i] = 0;
+                    if(panel[k][i] === 0 && noVerticalBlocks(j,k,i,panel)) {
+                        panel[k][i] = panel[j][i];
+                        panel[j][i] = 0;
                         // 面板上移动方块
-                        // renderSlideAnimation();
-                    } else if(board[k][i] !== 0 && board[k][i] === board[j][i] && noVerticalBlocks(j,k,i,board)) {
-                        board[k][i] += board[j][i];
-                        board[j][i] = 0;
+                        renderSlideAnimation(j,i,k,i);
+                    } else if(panel[k][i] !== 0 && panel[k][i] === panel[j][i] && noVerticalBlocks(j,k,i,panel)) {
+                        panel[k][i] += panel[j][i];
+                        panel[j][i] = 0;
                         // 面板上移动方块
-                        // renderSlideAnimation();
+                        renderSlideAnimation(j,i,k,i);
                     }
                 }
             }
@@ -136,16 +159,16 @@ function moveDown() {
 function moveLeft() {
     for(i=0; i<4; i++) {
         for(j=1; j<4; j++) {
-            if(board[i][j] !== 0) {
+            if(panel[i][j] !== 0) {
                 for(k=0; k<j; k++) {
-                    if(board[i][k] === 0 && noHorizontalBlocks(k,j,i,board)) {
-                        board[i][k] = board[i][j];
-                        board[i][j] = 0;
+                    if(panel[i][k] === 0 && noHorizontalBlocks(k,j,i,panel)) {
+                        panel[i][k] = panel[i][j];
+                        panel[i][j] = 0;
                         // 面板上移动方块
                         // renderSlideAnimation();
-                    } else if(board[i][k] !== 0 && board[i][k] === board[i][j] && noHorizontalBlocks(k,j,i,board)) {
-                        board[i][k] += board[i][j];
-                        board[i][j] = 0;
+                    } else if(panel[i][k] !== 0 && panel[i][k] === panel[i][j] && noHorizontalBlocks(k,j,i,panel)) {
+                        panel[i][k] += panel[i][j];
+                        panel[i][j] = 0;
                         // 面板上移动方块
                         // renderSlideAnimation();
                     }
@@ -162,16 +185,16 @@ function moveLeft() {
 function moveRight() {
     for(i=0; i<4; i++) {
         for(j=2; j>=0; j--) {
-            if(board[i][j] !== 0) {
+            if(panel[i][j] !== 0) {
                 for(k=3; k>j; k--) {
-                    if(board[i][k] === 0 && noHorizontalBlocks(j,k,i,board)) {
-                        board[i][k] = board[i][j];
-                        board[i][j] = 0;
+                    if(panel[i][k] === 0 && noHorizontalBlocks(j,k,i,panel)) {
+                        panel[i][k] = panel[i][j];
+                        panel[i][j] = 0;
                         // 面板上移动方块
                         // renderSlideAnimation();
-                    } else if(board[i][k] !== 0 && board[i][k] === board[i][j] && noHorizontalBlocks(j,k,i,board)) {
-                        board[i][k] += board[i][j];
-                        board[i][j] = 0;
+                    } else if(panel[i][k] !== 0 && panel[i][k] === panel[i][j] && noHorizontalBlocks(j,k,i,panel)) {
+                        panel[i][k] += panel[i][j];
+                        panel[i][j] = 0;
                         // 面板上移动方块
                         // renderSlideAnimation();
                     }

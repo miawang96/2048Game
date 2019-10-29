@@ -6,6 +6,9 @@ function renderGrid(randomX, randomY, randomNum) {
 }
 
 function renderSlideAnimation(fromX, fromY, toX, toY) {
-    $targetGrid = $('#grid_'+fromX+'_'+fromY);
-
+    const $targetGrid = $('#number_'+fromX+'_'+fromY);
+    $targetGrid.animate({
+        'left': getLeftPosition(toX) + 'px',
+        'top': getTopPosition(toY) + 'px',
+    });
 }
