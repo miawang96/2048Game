@@ -3,6 +3,11 @@ const KEY_DOWN = 40;
 const KEY_LEFT = 37;
 const KEY_RIGHT = 39;
 
+const PANEL_MARGIN = 18;
+const GRID_CELL_WIDTH = 132;
+const X_GAP = 24;
+const Y_GAP = 18;
+
 const numberGrid = {
     0: {
         bgColor: '#cdc1b4',
@@ -37,8 +42,8 @@ const numberGrid = {
         fontColor: '#f9f6f2',
     },
     256: {
-        bgColor: '#eee4ad',
-        fontColor: '#776e65',
+        bgColor: '#ecda63',
+        fontColor: '#f9f6f2',
     },
     512: {
         bgColor: '#ebca51',

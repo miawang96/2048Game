@@ -28,12 +28,14 @@ function updatePanelView() {
     // 生成覆盖在面板上的数字格子
     // 获取每个格子的绝对定位
     // 更新每个数字格子的数值
+    $(".number_cell").remove();
+
     for(let i=0; i<4; i++) {
         for(let j=0; j<4; j++) {
             $('.game-box').append('<div class="number_cell" id=number_'+i+'_'+j+'></div>');
                 $('#number_'+i+'_'+j).css({
-                    'left': getLeftPosition(i) + 'px',
-                    'top': getTopPosition(j) + 'px',
+                    'left': getLeftPosition(j) + 'px',
+                    'top': getTopPosition(i) + 'px',
                     'backgroundColor': numberGrid[panel[i][j]].bgColor,
                     'color': numberGrid[panel[i][j]].fontColor,
                     'border': '1px solid ' + numberGrid[panel[i][j]].bgColor,
@@ -105,102 +107,123 @@ function generateGameCode() {
  * 上移
  */
 function moveUp() {
+    if(!canMoveUp(panel)) return;
+
     for(i=0; i<4; i++) {
         for(j=1; j<4; j++) {
             if(panel[j][i] !== 0) {
                 for(k=0; k<j; k++) {
                     if(panel[k][i] === 0 && noVerticalBlocks(k,j,i,panel)) {
+                        renderSlideAnimation(j,i,k,i);
                         panel[k][i] = panel[j][i];
                         panel[j][i] = 0;
-                        // 面板上移动方块
-                        renderSlideAnimation(i,j,i,k);
                     } else if(panel[k][i] !== 0 && panel[k][i] === panel[j][i] && noVerticalBlocks(k,j,i,panel)) {
+                        renderSlideAnimation(j,i,k,i);
                         panel[k][i] += panel[j][i];
                         panel[j][i] = 0;
-                        // 面板上移动方块
-                        // renderSlideAnimation();
                     }
                 }
             }
         }
     }
+    setTimeout(updatePanelView, 200);
     generateGameCode();
+    setTimeout(isGameOver, 600);
 }
 
  /**
  * 下移
  */
 function moveDown() {
+    if(!canMoveDown(panel)) return;
+
     for(i=0; i<4; i++) {
         for(j=2; j>=0; j--) {
             if(panel[j][i] !== 0) {
                 for(k=3; k>j; k--) {
                     if(panel[k][i] === 0 && noVerticalBlocks(j,k,i,panel)) {
+                        renderSlideAnimation(j,i,k,i);
                         panel[k][i] = panel[j][i];
                         panel[j][i] = 0;
-                        // 面板上移动方块
-                        renderSlideAnimation(j,i,k,i);
                     } else if(panel[k][i] !== 0 && panel[k][i] === panel[j][i] && noVerticalBlocks(j,k,i,panel)) {
+                        renderSlideAnimation(j,i,k,i);
                         panel[k][i] += panel[j][i];
                         panel[j][i] = 0;
-                        // 面板上移动方块
-                        renderSlideAnimation(j,i,k,i);
                     }
                 }
             }
         }
     }
+   
+    setTimeout(updatePanelView, 200);
     generateGameCode();
+
+    setTimeout(isGameOver, 600);
 }
 
  /**
  * 左移
  */
-function moveLeft() {
+function moveLeft() {   
+    if(!canMoveLeft(panel)) return;
+
     for(i=0; i<4; i++) {
         for(j=1; j<4; j++) {
             if(panel[i][j] !== 0) {
                 for(k=0; k<j; k++) {
                     if(panel[i][k] === 0 && noHorizontalBlocks(k,j,i,panel)) {
+                        renderSlideAnimation(i,j,i,k);
                         panel[i][k] = panel[i][j];
                         panel[i][j] = 0;
-                        // 面板上移动方块
-                        // renderSlideAnimation();
                     } else if(panel[i][k] !== 0 && panel[i][k] === panel[i][j] && noHorizontalBlocks(k,j,i,panel)) {
+                        renderSlideAnimation(i,j,i,k);
                         panel[i][k] += panel[i][j];
                         panel[i][j] = 0;
-                        // 面板上移动方块
-                        // renderSlideAnimation();
                     }
                 }
             }
         }
     }
+    setTimeout(updatePanelView, 200);
     generateGameCode();
+
+    setTimeout(isGameOver, 600);
 }
 
  /**
  * 右移
  */
 function moveRight() {
+    if(!canMoveRight(panel)) return;
+
     for(i=0; i<4; i++) {
         for(j=2; j>=0; j--) {
             if(panel[i][j] !== 0) {
                 for(k=3; k>j; k--) {
                     if(panel[i][k] === 0 && noHorizontalBlocks(j,k,i,panel)) {
+                        renderSlideAnimation(i,j,i,k);
                         panel[i][k] = panel[i][j];
                         panel[i][j] = 0;
-                        // 面板上移动方块
-                        // renderSlideAnimation();
                     } else if(panel[i][k] !== 0 && panel[i][k] === panel[i][j] && noHorizontalBlocks(j,k,i,panel)) {
+                        renderSlideAnimation(i,j,i,k);
                         panel[i][k] += panel[i][j];
                         panel[i][j] = 0;
-                        // 面板上移动方块
-                        // renderSlideAnimation();
                     }
                 }
             }
         }
     }
+    setTimeout(updatePanelView, 200);
     generateGameCode();
+
+    setTimeout(isGameOver, 600);
+}
+
+/**
+ * 判断游戏是否结束
+ */
+function isGameOver() {
+    if(!(canMoveLeft(panel) || canMoveRight(panel) || canMoveUp(panel) || canMoveDown(panel))) {
+        alert('Game Over!')
+    }
 }
